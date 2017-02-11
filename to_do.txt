@@ -1,0 +1,5 @@
+- create json file parser
+- finalize filtering / sorting algorithms
+- create generators in csv and xml
+- finalize command class
+- write & run tests

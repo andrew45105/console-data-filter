@@ -1,0 +1,8 @@
+- create composer empty project with src, public, input, output and tests directories
+- create entry point (/public/index.php)
+- create data file (/var/data.csv)
+- create main command file
+- create classes for reading / analysis data
+- create classes for filtering / sorting data
+- create classes for generate output data
+- write and run tests for all classes
