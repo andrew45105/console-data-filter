@@ -13,7 +13,7 @@ abstract class DataGenerator implements DataGeneratorInterface
     /**
      * @var array
      */
-    private $data;
+    protected $data;
 
     /**
      * DataGenerator constructor.
@@ -24,5 +24,8 @@ abstract class DataGenerator implements DataGeneratorInterface
         $this->data = $data;
     }
 
-    abstract public function generate(): mixed;
+    /**
+     * @return void
+     */
+    abstract public function generate(): void;
 }

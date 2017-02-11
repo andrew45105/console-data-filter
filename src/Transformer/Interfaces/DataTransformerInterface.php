@@ -12,13 +12,14 @@ interface DataTransformerInterface
 {
     /**
      * @param FilterCriteria $criteria
-     * @return array
+     * @return void
      */
-    public function filterData(FilterCriteria $criteria) : array ;
+    public function filterData(FilterCriteria $criteria) : void ;
 
     /**
      * @param string $param
-     * @return array
+     * @param string $order
+     * @return void
      */
-    public function sortData(string $param) : array ;
+    public function sortData(string $param, string $order) : void ;
 }

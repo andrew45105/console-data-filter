@@ -1,4 +1,4 @@
 Console data filter / sorting script
 
-Run:
-php public/index.php generate:data
+Run example:
+php public/index.php generate:data --name --url --stars=5 --sort-field=url --sort-order=desc

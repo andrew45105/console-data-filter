@@ -26,14 +26,23 @@ abstract class DataTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param FilterCriteria $criteria
      * @return array
      */
-    abstract public function filterData(FilterCriteria $criteria): array;
+    public function getData(): array
+    {
+        return $this->data;
+    }
+
+    /**
+     * @param FilterCriteria $criteria
+     * @return void
+     */
+    abstract public function filterData(FilterCriteria $criteria): void;
 
     /**
      * @param string $param
-     * @return array
+     * @param string $order
+     * @return void
      */
-    abstract public function sortData(string $param): array;
+    abstract public function sortData(string $param, string $order): void;
 }

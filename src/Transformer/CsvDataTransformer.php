@@ -12,24 +12,32 @@ class CsvDataTransformer extends DataTransformer
 {
     /**
      * @param FilterCriteria $criteria
-     * @return array
+     * @return void
      */
-    public function filterData(FilterCriteria $criteria): array
+    public function filterData(FilterCriteria $criteria): void
     {
         $result = [];
         foreach ($this->data as $elem) {
-            //...
+            if ($elem[$criteria->getKey()] === $criteria->getEquals()) {
+                $result[] = $elem;
+            }
         }
-
-        return $result;
+        $this->data = $result;
     }
 
     /**
      * @param string $param
-     * @return array
+     * @param string $order
+     * @return void
      */
-    public function sortData(string $param): array
+    public function sortData(string $param, string $order): void
     {
-        return [];
+        uasort($this->data, function($a, $b) use ($param, $order) {
+            if ($order == 'asc') {
+                return $a[$param] <=> $b[$param];
+            } else {
+                return $b[$param] <=> $a[$param];
+            }
+        });
     }
 }

@@ -9,7 +9,7 @@ namespace App\Generator\Interfaces;
 interface DataGeneratorInterface
 {
     /**
-     * @return mixed
+     * @return void
      */
-    public function generate() : mixed;
+    public function generate() : void;
 }
