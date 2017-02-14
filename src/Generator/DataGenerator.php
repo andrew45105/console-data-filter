@@ -25,7 +25,7 @@ abstract class DataGenerator implements DataGeneratorInterface
     }
 
     /**
-     * @return void
+     * @return string
      */
-    abstract public function generate(): void;
+    abstract public function generate(): string ;
 }

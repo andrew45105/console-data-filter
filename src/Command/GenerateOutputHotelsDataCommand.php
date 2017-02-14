@@ -2,9 +2,9 @@
 
 namespace App\Command;
 
-use App\Generator\CsvDataGenerator;
+use App\Generator\FileDataGenerator;
 use App\Parser\CsvFileParser;
-use App\Transformer\CsvDataTransformer;
+use App\Transformer\DataTransformer;
 use App\Transformer\Filter\FilterCriteria;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,7 +19,7 @@ class GenerateOutputHotelsDataCommand extends Command
 {
     const FILE_PATH = __DIR__ . '/../../input/data.csv';
     const OUTPUT_DIR = __DIR__ . '/../../output/';
-    const OUTPUT_FILE = 'hotels';
+    const OUTPUT_FILE_PREFIX = 'hotels';
 
     /**
      * Command configuration
@@ -73,35 +73,46 @@ class GenerateOutputHotelsDataCommand extends Command
     {
         $parser = new CsvFileParser(static::FILE_PATH);
         $data = $parser->parseData();
-        $transformer = new CsvDataTransformer($data);
+        $transformer = new DataTransformer($data);
+
+        $criteria = new FilterCriteria();
 
         if ($name = $input->getOption('name')) {
-            $transformer->filterData((new FilterCriteria('name', $name)));
+            $criteria->setKey('name');
+            $criteria->setEquals($name);
         }
         if ($url = $input->getOption('url')) {
-            $transformer->filterData((new FilterCriteria('url', $url)));
+            $criteria->setKey('url');
+            $criteria->setEquals($url);
         }
         if ($stars = $input->getOption('stars')) {
-            $transformer->filterData((new FilterCriteria('stars', $stars)));
+            $criteria->setKey('stars');
+            $criteria->setEquals($stars);
         }
+
+        $transformer->filterData($criteria);
+
         if ($sortField = $input->getOption('sort-field')) {
             $order = $input->getOption('sort-order');
             $transformer->sortData($sortField, $order);
         }
 
         $format = $input->getOption('format');
-        switch ($format) {
-            case 'csv' :
-                $generator = new CsvDataGenerator(
-                    $transformer->getData(),
-                    static::OUTPUT_DIR,
-                    static::OUTPUT_FILE
-                );
-                $generator->generate();
-                break;
-            default:
-                break;
+
+        if (in_array($format, ['csv', 'xml', 'json'])) {
+            $generatorClass = new \ReflectionClass('App\\Generator\\' . ucfirst($format) . 'FileDataGenerator');
+            /* @var FileDataGenerator */
+            $generatorInstance = $generatorClass->newInstanceArgs([
+                $transformer->getData(),
+                static::OUTPUT_DIR,
+                static::OUTPUT_FILE_PREFIX,
+            ]);
+            $fileName = $generatorInstance->generate();
+            $output->writeln("<info>File /output/$fileName was successfully generated</info>");
+        } else {
+            $output->writeln("<info>Format $format is not acceptable</info>");
         }
+
         return 1;
     }
 }

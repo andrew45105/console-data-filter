@@ -46,7 +46,7 @@ class FilterCriteria
      * @param null $equals
      */
     public function __construct(
-        string $key,
+        string $key = null,
         $equals = null
     )
     {
@@ -102,6 +102,15 @@ class FilterCriteria
     public function getDown()
     {
         return $this->down;
+    }
+
+    /**
+     * @param string $key
+     */
+    public function setKey(string $key)
+    {
+        $this->validateParams();
+        $this->key = $key;
     }
 
     /**
